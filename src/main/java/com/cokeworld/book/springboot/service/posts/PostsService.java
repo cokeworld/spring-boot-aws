@@ -2,12 +2,15 @@ package com.cokeworld.book.springboot.service.posts;
 
 import com.cokeworld.book.springboot.domain.posts.Posts;
 import com.cokeworld.book.springboot.domain.posts.PostsRepository;
+import com.cokeworld.book.springboot.web.dto.PostsListResponseDto;
 import com.cokeworld.book.springboot.web.dto.PostsResponseDto;
 import com.cokeworld.book.springboot.web.dto.PostsSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -35,5 +38,13 @@ public class PostsService {
 
         return new PostsResponseDto(entity);
     }
+
+    @Transactional(readOnly = true)
+    public List<PostsListResponseDto> findAllDesc() {
+        return postsRepository.findAllDesc().stream()
+                .map(PostsListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
 
 }
